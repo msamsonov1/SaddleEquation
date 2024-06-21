@@ -1,0 +1,45 @@
+import numpy as np
+from matplotlib import animation
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+
+# Define the saddle equation
+def saddle(x, y):
+    return x**2 - y**2
+
+
+# Create a 3D plot without axes
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+# Turn off axis visibility
+ax.axis('off')
+
+# Create a mesh grid
+x = np.linspace(-2, 2, 100)
+y = np.linspace(-2, 2, 100)
+X, Y = np.meshgrid(x, y)
+Z = saddle(X, Y)
+
+# Plot the surface
+surf = ax.plot_surface(X, Y, Z, cmap='plasma')
+
+
+# Animation parameters
+total_duration = 10  # Seconds (adjust as needed)
+frames = int(total_duration * 1000 / 50)  # Number of frames (50ms interval)
+angle_increment = 1 * 360 / frames  # Degrees per frame (5 deg/sec)
+
+
+# Define the animation update function
+def update_view(frame):
+    angle = frame * angle_increment  # Update azimuth angle
+    ax.view_init(elev=30, azim=angle)
+    return surf,
+
+# Create animation using animatplotlib
+ani = animation.FuncAnimation(fig, update_view, frames=frames, interval=50)
+
+# Show the plot
+plt.show()
